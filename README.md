@@ -47,3 +47,5 @@ python app.py
 ```bash
 http://localhost:5000
 ```
+
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/96f9eb48-e2d1-40c0-970e-7bda31fc082b" />
