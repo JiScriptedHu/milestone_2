@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Summarizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            padding: 3rem 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-zone {
+            border: 2px dashed #d4d4d4;
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            border-color: #1a1a1a;
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-zone p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .image-preview {
+            width: 100%;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .text-content {
+            color: #1a1a1a;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .file-name {
+            margin-top: 1rem;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .file-name.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2rem 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .upload-zone {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OCR Summarizer</h1>
+        <p class="subtitle">Extract and summarize text from images</p>
+
+        <div class="card">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="upload-zone">
+                    <input type="file" name="image" id="image" accept="image/*" required>
+                    <p>Drop image or click to upload</p>
+                    <div class="file-name" id="fileName"></div>
+                </div>
+                <button type="submit" class="btn">Upload & Summarize</button>
+            </form>
+        </div>
+
+        {% if image_path %}
+        <div class="card">
+            <div class="section-title">Image</div>
+            <img src="{{ image_path }}" class="image-preview" alt="Uploaded Image">
+        </div>
+
+        <div class="card">
+            <div class="section-title">Extracted Text</div>
+            <div class="text-content">{{ ocr_text }}</div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Summary</div>
+            <div class="text-content">{{ summary }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('image');
+        const fileName = document.getElementById('fileName');
+
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+                fileName.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
